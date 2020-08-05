@@ -1,6 +1,6 @@
 import React from "react";
 
-const Contacts = ({ persons, serachValue }) => {
+const Contacts = ({ persons, serachValue , deleteContact }) => {
   return (
     <table>
       <thead>
@@ -13,10 +13,11 @@ const Contacts = ({ persons, serachValue }) => {
       <tbody>
         {persons
           .filter((person) => person.name.toLowerCase().includes(serachValue.toLowerCase()))
-          .map((p) => (
-            <tr key={p.name}>
+          .map((p,i) => (
+            <tr key={i}>
               <td> {p.name} </td>
               <td>{p.number}</td>
+              <td><button onClick={() => deleteContact(p.id)}>delete</button></td>
             </tr>
           ))}
       </tbody>
