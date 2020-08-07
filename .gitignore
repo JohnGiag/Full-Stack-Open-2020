@@ -3,6 +3,10 @@
 # test code developed during the course
 /courseCode
 
+# dev
+/requests
+
+
 # dependencies
 /node_modules
 /.pnp
@@ -13,6 +17,7 @@
 
 # production
 /build
+
 
 # misc
 .env

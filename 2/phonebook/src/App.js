@@ -50,17 +50,17 @@ const App = () => {
             setNotificationMessage(`Updated '${personObject.name}'`);
             setTimeout(() => {
               setNotificationMessage(null);
-            }, 3000);
+            }, 5000);
           })
           .catch((error) => {
             setNotificationType("error");
             setNotificationMessage(
-              `${personObject.name}' has been removed from the phonebook`
+              `${error.response.data.error}`
             );
             setTimeout(() => {
               setNotificationMessage(null);
-            }, 3000);
-            setPersons(persons.filter((p) => p.id !== oldPersonObject.id));
+            }, 5000);
+           
           });
       }
     } else {
@@ -73,8 +73,17 @@ const App = () => {
         setNotificationMessage(`Added '${personObject.name}'`);
         setTimeout(() => {
           setNotificationMessage(null);
-        }, 3000);
-      });
+        }, 5000);
+      })
+      .catch(error=>{
+        setNotificationType("error");
+        setNotificationMessage(
+          `${error.response.data.error}`
+        );
+        setTimeout(() => {
+          setNotificationMessage(null);
+        }, 5000);
+      })
     }
   };
 

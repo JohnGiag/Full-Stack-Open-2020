@@ -8,7 +8,7 @@ const App = () => {
   const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState("");
   const [showAll, setShowAll] = useState(true);
-  const [errorMessage, setErrorMessage] = useState('some error happened...')
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     noteService.getAll().then((initialNotes) => {
@@ -26,6 +26,7 @@ const App = () => {
 
   const toggleImportanceOf = (id) => {
     const note = notes.find((n) => n.id === id);
+    
     const changedNote = { ...note, important: !note.important };
 
     noteService.update(id, changedNote).then((changedNote) => {
@@ -37,7 +38,7 @@ const App = () => {
       )
       setTimeout(() => {
         setErrorMessage(null)
-      }, 100)
+      }, 5000)
       setNotes(notes.filter(n => n.id !== id))
     })
   };
