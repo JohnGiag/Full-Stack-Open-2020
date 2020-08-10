@@ -1,5 +1,4 @@
 const express = require('express');
-const { request, response } = require('express');
 const cors = require('cors');
 const logger = require('./middleware/logger.js');
 const unknownEndpoint = require('./middleware/unkownEndpoint.js');
@@ -16,12 +15,6 @@ app.use(logger);
 
 // routing
 const baseUrl = '/api/persons';
-
-app.get('/info', (req, res) => {
-  res.send(`<div>Phonebook has ${persons.length} entries.<div> 
-            <br>
-            ${new Date()} `);
-});
 
 // get all
 app.get(baseUrl, (req, res) => {
@@ -44,6 +37,7 @@ app.get(`${baseUrl}/:id`, (req, res, next) => {
 });
 
 // create
+// eslint-disable-next-line consistent-return
 app.post(baseUrl, (req, res, next) => {
   const { body } = req;
 
@@ -61,16 +55,18 @@ app.post(baseUrl, (req, res, next) => {
     name: body.name,
     number: body.number,
   });
-  person.save().then((savedPerson) => {
-    res.json(savedPerson);
-  })
+  person
+    .save()
+    .then((savedPerson) => {
+      res.json(savedPerson);
+    })
     .catch((error) => next(error));
 });
 
 // delete
 app.delete(`${baseUrl}/:id`, (req, res, next) => {
   Person.findByIdAndRemove(req.params.id)
-    .then((person) => {
+    .then(() => {
       res.status(204).end();
     })
     .catch((error) => next(error));
@@ -83,7 +79,11 @@ app.put(`${baseUrl}/:id`, (req, res, next) => {
     name: body.name,
     number: body.number,
   };
-  Person.findByIdAndUpdate(req.params.id, person, { new: true, runValidators: true, context: 'query' })
+  Person.findByIdAndUpdate(req.params.id, person, {
+    new: true,
+    runValidators: true,
+    context: 'query',
+  })
     .then((updatedPerson) => {
       // res.json(updatedPerson);
       if (updatedPerson) {
@@ -104,5 +104,6 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
+  // eslint-disable-next-line no-console
   console.log(`Server running on port ${PORT}`);
 });
